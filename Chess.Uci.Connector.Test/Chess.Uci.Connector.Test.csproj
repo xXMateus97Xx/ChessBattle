@@ -1,0 +1,32 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+
+    <IsPackable>false</IsPackable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="coverlet.msbuild" Version="10.0.1">
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
+      <PrivateAssets>all</PrivateAssets>
+    </PackageReference>
+    <PackageReference Include="nunit" Version="4.6.1" />
+    <PackageReference Include="NUnit3TestAdapter" Version="6.3.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="18.10.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Chess.Uci.Connector\Chess.Uci.Connector.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="config-test.conf" CopyToPublishDirectory="always" CopyToOutputDirectory="always" />
+    <Content Include="config-test-unknown.conf" CopyToPublishDirectory="always" CopyToOutputDirectory="always" />
+    <Content Include="config-test-blank.conf" CopyToPublishDirectory="always" CopyToOutputDirectory="always" />
+    <Content Include="conf-test-thread-exception.conf" CopyToPublishDirectory="always" CopyToOutputDirectory="always" />
+    <Content Include="conf-test-engine-path-exception.conf" CopyToPublishDirectory="always" CopyToOutputDirectory="always" />
+  </ItemGroup>
+
+</Project>

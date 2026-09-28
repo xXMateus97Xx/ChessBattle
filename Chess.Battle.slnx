@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Chess.Battle.Console/Chess.Battle.Console.csproj" />
+  <Project Path="Chess.Battle.Tests/Chess.Battle.Tests.csproj" />
+  <Project Path="Chess.Battle/Chess.Battle.csproj" />
+  <Project Path="Chess.Uci.Connector.Test/Chess.Uci.Connector.Test.csproj" />
+  <Project Path="Chess.Uci.Connector/Chess.Uci.Connector.csproj" />
+</Solution>
