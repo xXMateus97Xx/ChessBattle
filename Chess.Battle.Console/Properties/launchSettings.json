@@ -1,8 +1,0 @@
-{
-  "profiles": {
-    "Chess.Battle.Console": {
-      "commandName": "Project",
-      "commandLineArgs": "--e1path C:\\Users\\mateu\\Downloads\\stockfish-windows-x86-64-universal.exe --e1name teste --e1threads 4 --e2path C:\\Users\\mateu\\Downloads\\stockfish-windows-x86-64-universal.exe --e2name asd --e2threads 4 -m 500 -o teste.txt -v -w 1"
-    }
-  }
-}
