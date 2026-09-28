@@ -1,4 +1,4 @@
-# UCI Battle
+# Chess Battle
 
 Aplicação de console em C# (.NET 10) que coloca duas engines de xadrez compatíveis com o protocolo **UCI** (Stockfish, Komodo, Leela etc.) para jogar uma contra a outra e grava a partida em um arquivo **PGN**.
 
