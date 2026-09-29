@@ -13,9 +13,17 @@ Direto pelo SDK:
 
 ```powershell
 dotnet run --project Chess.Battle.Console -- `
-  --e1path C:\engines\stockfish.exe --e1name "Stockfish A" --e1threads 4 `
-  --e2path C:\engines\stockfish.exe --e2name "Stockfish B" --e2threads 1 `
+  --e1path C:\engines\stockfish.exe --e1name "Stockfish A" --e1config e1.conf `
+  --e2path C:\engines\stockfish.exe --e2name "Stockfish B" `
   --movetime 1000 -o partida.pgn
+```
+
+O arquivo de `--e1config`/`--e2config` tem um par `chave=valor` por linha (linhas começando com `#` são ignoradas); cada linha vira um comando `setoption name chave value valor` enviado pra engine logo após o handshake UCI. Exemplo de `e1.conf`:
+
+```
+# Threads e Hash são opções padrão UCI, aceitas pela maioria das engines
+Threads=4
+Hash=256
 ```
 
 Ou publicando um executável nativo (Native AOT, x86-64-v3):
@@ -30,10 +38,10 @@ dotnet publish Chess.Battle.Console -c Release -r win-x64
 |---|---|---|---|
 | `--e1path` | | sim | Caminho do executável da engine 1. |
 | `--e1name` | | sim | Nome da engine 1 (vai para a tag `White`/`Black` do PGN). |
-| `--e1threads` | | não | Threads da engine 1 (padrão `2`). |
+| `--e1config` | | não | Caminho de um arquivo `chave=valor` com opções UCI da engine 1 (ex.: `Threads`, `Hash`). |
 | `--e2path` | | sim | Caminho do executável da engine 2. |
 | `--e2name` | | sim | Nome da engine 2. |
-| `--e2threads` | | não | Threads da engine 2 (padrão `2`). |
+| `--e2config` | | não | Caminho de um arquivo `chave=valor` com opções UCI da engine 2. |
 | `--movetime` | `-m` | sim | Milissegundos que cada engine pensa por lance. Vale para as duas engines. |
 | `--output` | `-o` | sim | Caminho do PGN gerado (sobrescrito se já existir). |
 | `--white` | `-w` | não | Qual engine joga de brancas: `1` ou `2` (padrão `1`). |

@@ -21,13 +21,13 @@ class Program
             {
                 EnginePath = options.Engine1Path,
                 Name = options.Engine1Name,
-                Threads = options.Engine1Threads ?? 2,
+                Options = LoadEngineOptions(options.Engine1ConfigPath),
             },
             Engine2 = new EngineSettings
             {
                 EnginePath = options.Engine2Path,
                 Name = options.Engine2Name,
-                Threads = options.Engine2Threads ?? 2
+                Options = LoadEngineOptions(options.Engine2ConfigPath),
             },
             MoveTime = TimeSpan.FromMilliseconds(options.MoveTimeMs)
         };
@@ -61,4 +61,7 @@ class Program
         System.Console.ReadLine();
 #endif
     }
+
+    private static Dictionary<string, string> LoadEngineOptions(string configPath) =>
+        string.IsNullOrEmpty(configPath) ? [] : Settings.LoadOptions(configPath);
 }

@@ -113,9 +113,12 @@ public class BattleRing
 
     private void LogEngineSettings(int number, EngineSettings engine)
     {
-        _logger.LogInfo("Engine {0} settings: name={1}, path={2}, threads={3}, read timeout={4}",
-            number, engine.Name, engine.EnginePath, engine.Threads, FormatTimeout(engine.ReadTimeout));
+        _logger.LogInfo("Engine {0} settings: name={1}, path={2}, options={3}, read timeout={4}",
+            number, engine.Name, engine.EnginePath, FormatOptions(engine.Options), FormatTimeout(engine.ReadTimeout));
     }
+
+    private static string FormatOptions(Dictionary<string, string> options) =>
+        options.Count == 0 ? "none" : string.Join(", ", options.Select(o => $"{o.Key}={o.Value}"));
 
     private void LogConnection(int number, UCIBattleConfiguration engine, TimeSpan connect, TimeSpan newGame)
     {

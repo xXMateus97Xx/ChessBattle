@@ -9,11 +9,11 @@ internal class CommandLineOptions
 
     public string Engine1Path { get; set; }
     public string Engine1Name { get; set; }
-    public int? Engine1Threads { get; set; }
+    public string Engine1ConfigPath { get; set; }
 
     public string Engine2Path { get; set; }
     public string Engine2Name { get; set; }
-    public int? Engine2Threads { get; set; }
+    public string Engine2ConfigPath { get; set; }
 
     public string OutputPath { get; set; }
     public int WhiteEngine { get; set; }
@@ -25,11 +25,11 @@ internal class CommandLineOptions
     {
         var e1Path = new Option<string>("--e1path") { Required = true, Description = "Set engine 1 path" };
         var e1Name = new Option<string>("--e1name") { Required = true, Description = "Set engine 1 name" };
-        var e1Threads = new Option<int>("--e1threads") { Description = "Set engine 1 threads" };
+        var e1Config = new Option<string>("--e1config") { Description = "Path to a key=value file with UCI options for engine 1 (setoption name key value value; # lines are ignored)" };
 
         var e2Path = new Option<string>("--e2path") { Required = true, Description = "Set engine 2 path" };
         var e2Name = new Option<string>("--e2name") { Required = true, Description = "Set engine 2 name" };
-        var e2Threads = new Option<int>("--e2threads") { Description = "Set engine 2 threads" };
+        var e2Config = new Option<string>("--e2config") { Description = "Path to a key=value file with UCI options for engine 2 (setoption name key value value; # lines are ignored)" };
 
         var output = new Option<string>("--output", "-o") { Required = true, Description = "PGN output path" };
         var white = new Option<int>("--white", "-w") { Description = "Defines wich engine will control the white moves" };
@@ -50,8 +50,8 @@ internal class CommandLineOptions
 
         var command = new RootCommand("Makes two UCI chess engines play against each other")
         {
-            e1Path, e1Name, e1Threads,
-            e2Path, e2Name, e2Threads,
+            e1Path, e1Name, e1Config,
+            e2Path, e2Name, e2Config,
             output, white, timeout, movetime, verbose
         };
 
@@ -61,10 +61,10 @@ internal class CommandLineOptions
             {
                 Engine1Path = result.GetValue(e1Path),
                 Engine1Name = result.GetValue(e1Name),
-                Engine1Threads = result.GetResult(e1Threads) is null ? null : result.GetValue(e1Threads),
+                Engine1ConfigPath = result.GetValue(e1Config),
                 Engine2Path = result.GetValue(e2Path),
                 Engine2Name = result.GetValue(e2Name),
-                Engine2Threads = result.GetResult(e2Threads) is null ? null : result.GetValue(e2Threads),
+                Engine2ConfigPath = result.GetValue(e2Config),
                 OutputPath = result.GetValue(output),
                 WhiteEngine = result.GetValue(white),
                 TimeoutSeconds = result.GetResult(timeout) is null ? null : result.GetValue(timeout),

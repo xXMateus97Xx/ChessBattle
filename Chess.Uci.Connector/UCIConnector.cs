@@ -13,9 +13,11 @@ public partial class UCIConnector : IDisposable
     private const string IsReadyCommand = "isready\n";
     private const string QuitCommand = "quit\n";
     private const string NewGameCommand = "ucinewgame\n";
-    private const string SetThreadsCommand = "setoption name Threads value {0}\n";
+    private const string SetOptionCommandPattern = "setoption name {0} value {1}\n";
+    private const string NoMoveToken = "0000";
+    private const string NoMoveSentinel = "(none)";
 
-    [GeneratedRegex("bestmove (?<move>([a-h][1-8]){2}[rnbq]?|[(]none[)])")]
+    [GeneratedRegex($"bestmove (?<move>([a-h][1-8]){{2}}[rnbq]?|[(]none[)]|{NoMoveToken})")]
     private static partial Regex BestMoveRegex();
 
     [GeneratedRegex(@"^\s*uciok\s*$")]
@@ -115,7 +117,8 @@ public partial class UCIConnector : IDisposable
     private string GetUciMove(string cmd)
     {
         WriteCommand(cmd);
-        return ReadResponse(BestMoveRegex(), "move");
+        var move = ReadResponse(BestMoveRegex(), "move");
+        return move == NoMoveToken ? NoMoveSentinel : move;
     }
 
     public void Disconnect()
@@ -170,8 +173,10 @@ public partial class UCIConnector : IDisposable
 
     public void ConfigureEngine()
     {
-        var cmd = string.Format(SetThreadsCommand, _settings.Threads);
-        WriteCommand(cmd);
+        VerifyConnection();
+
+        foreach (var (name, value) in _settings.Options)
+            WriteCommand(string.Format(SetOptionCommandPattern, name, value));
     }
 
     private void WriteCommand(string cmd)

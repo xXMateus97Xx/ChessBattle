@@ -21,12 +21,4 @@
     <ProjectReference Include="..\Chess.Uci.Connector\Chess.Uci.Connector.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Content Include="config-test.conf" CopyToPublishDirectory="always" CopyToOutputDirectory="always" />
-    <Content Include="config-test-unknown.conf" CopyToPublishDirectory="always" CopyToOutputDirectory="always" />
-    <Content Include="config-test-blank.conf" CopyToPublishDirectory="always" CopyToOutputDirectory="always" />
-    <Content Include="conf-test-thread-exception.conf" CopyToPublishDirectory="always" CopyToOutputDirectory="always" />
-    <Content Include="conf-test-engine-path-exception.conf" CopyToPublishDirectory="always" CopyToOutputDirectory="always" />
-  </ItemGroup>
-
 </Project>
