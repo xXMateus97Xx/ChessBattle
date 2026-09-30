@@ -15,10 +15,14 @@ public partial class UCIConnector : IDisposable
     private const string NewGameCommand = "ucinewgame\n";
     private const string SetOptionCommandPattern = "setoption name {0} value {1}\n";
     private const string NoMoveToken = "0000";
+    private const string NoMoveTokenAlt = "a1a1";
     private const string NoMoveSentinel = "(none)";
 
     [GeneratedRegex($"bestmove (?<move>([a-h][1-8]){{2}}[rnbq]?|[(]none[)]|{NoMoveToken})")]
     private static partial Regex BestMoveRegex();
+
+    [GeneratedRegex(@"^error\b", RegexOptions.IgnoreCase)]
+    private static partial Regex EngineErrorRegex();
 
     [GeneratedRegex(@"^\s*uciok\s*$")]
     private static partial Regex UciOkRegex();
@@ -117,8 +121,8 @@ public partial class UCIConnector : IDisposable
     private string GetUciMove(string cmd)
     {
         WriteCommand(cmd);
-        var move = ReadResponse(BestMoveRegex(), "move");
-        return move == NoMoveToken ? NoMoveSentinel : move;
+        var move = ReadResponse(BestMoveRegex(), "move", EngineErrorRegex(), NoMoveSentinel);
+        return move is NoMoveToken or NoMoveTokenAlt ? NoMoveSentinel : move;
     }
 
     public void Disconnect()
@@ -187,7 +191,7 @@ public partial class UCIConnector : IDisposable
             _process.StandardInput.Write(cmd);
     }
 
-    private string ReadResponse(Regex lineRegex, string resultGroup = null)
+    private string ReadResponse(Regex lineRegex, string resultGroup = null, Regex abortRegex = null, string abortResult = null)
     {
         VerifyConnection();
 
@@ -202,10 +206,11 @@ public partial class UCIConnector : IDisposable
 
                 var match = lineRegex.Match(line);
 
-                if (!match.Success)
-                    continue;
+                if (match.Success)
+                    return resultGroup is null ? line : match.Groups[resultGroup].Value;
 
-                return resultGroup is null ? line : match.Groups[resultGroup].Value;
+                if (abortRegex is not null && abortRegex.IsMatch(line))
+                    return abortResult;
             }
         }
     }

@@ -35,10 +35,10 @@ public class BattleRing
         {
             _notationWriter.WriteHeader(white, black);
             DoBattle(white, black);
-            SaveResult();
         }
         finally
         {
+            SaveResult();
             UnloadEngines(white, black);
         }
     }
